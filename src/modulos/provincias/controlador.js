@@ -21,6 +21,14 @@ module.exports = function (dbInyectada) {
         return db.uno(TABLA, id);
     }
     
+    function consulta(campo, valor, orden) {
+        return db.consulta(TABLA, campo, valor, orden);
+    }
+    
+    function conteo(campo, valor) {
+        return db.consulta(TABLA, campo, valor);
+    }
+
     function agregar(body) {
         return db.agregar(TABLA, body);
     }
@@ -33,6 +41,8 @@ module.exports = function (dbInyectada) {
     return {
     todos,
     todosOrdenado,
+    consulta,
+    conteo,
     uno,
     agregar,
     eliminar,

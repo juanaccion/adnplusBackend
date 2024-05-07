@@ -71,6 +71,14 @@ function consulta(tabla, campo, valor, orden){
    })
 }
 
+function conteo(tabla, campo, valor){
+    return new Promise( (resolve, reject) => {
+        conexion.query(`SELECT COUNT(*) as total FROM ${tabla} WHERE ${campo} = "${valor}"`, (error, result) => {
+            return error ? reject(error) : resolve(result);
+        })
+   })
+}
+
 function agregar(tabla, data){
     return new Promise( (resolve, reject) => {
         console.log(data);
@@ -104,6 +112,7 @@ module.exports = {
     todosOrdenado,
     uno,
     consulta,
+    conteo,
     agregar,
     eliminar,
     query,

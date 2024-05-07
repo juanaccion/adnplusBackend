@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.get('/', todos);
 router.get('/orden/:campo', todosOrdenado);
+router.get('/consulta/:campo/:valor/:orden', consulta);
+router.get('/conteo/:campo/:valor', conteo);
 router.get('/:id', uno);
 router.put('/', eliminar);
 router.post('/', agregar);
@@ -37,6 +39,29 @@ async function todosOrdenado (req, res, next){
 async function uno(req, res, next){
     try{
         const items = await controlador.uno(req.params.id)
+        respuesta.success(req, res, items, 200)
+    }catch(err){
+        next(err);
+    }
+}
+
+async function consulta(req, res, next){
+    const campo = req.params.campo;
+    const valor = req.params.valor;
+    const orden = req.params.orden;
+    try{
+        const items = await controlador.consulta(campo, valor, orden)
+        respuesta.success(req, res, items, 200)
+    }catch(err){
+        next(err);
+    }
+}
+
+async function conteo(req, res, next){
+    const campo = req.params.campo;
+    const valor = req.params.valor;
+    try{
+        const items = await controlador.consulta(campo, valor)
         respuesta.success(req, res, items, 200)
     }catch(err){
         next(err);

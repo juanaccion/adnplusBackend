@@ -1,4 +1,3 @@
-
 const express = require('express');
 
 const respuesta = require('../../red/respuestas');
@@ -8,9 +7,10 @@ const controlador = require('./index');
 const router = express.Router();
 
 router.get('/', todos);
-router.get('/orden/:campo', todosOrdenado);
 router.get('/:id', uno);
+router.get('/orden/:campo', todosOrdenado);
 router.get('/consulta/:campo/:valor/:orden', consulta);
+router.get('/conteo/:campo/:valor', conteo);
 router.put('/', eliminar);
 router.post('/', agregar);
 
@@ -45,17 +45,22 @@ async function uno(req, res, next){
 }
 
 async function consulta(req, res, next){
-
-    // const campo = decodeURIComponent(req.params.campo);
-    // const valor = decodeURIComponent(req.params.valor);
-    // const orden = decodeURIComponent(req.params.orden);
     const campo = req.params.campo;
     const valor = req.params.valor;
     const orden = req.params.orden;
-    //console.log('Jola ',campo, valor, orden);
-
     try{
         const items = await controlador.consulta(campo, valor, orden)
+        respuesta.success(req, res, items, 200)
+    }catch(err){
+        next(err);
+    }
+}
+
+async function conteo(req, res, next){
+    const campo = req.params.campo;
+    const valor = req.params.valor;
+    try{
+        const items = await controlador.consulta(campo, valor)
         respuesta.success(req, res, items, 200)
     }catch(err){
         next(err);
